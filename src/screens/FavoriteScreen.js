@@ -29,7 +29,8 @@ export default function FavoriteScreen() {
     return (
       <View style={styles.emptyContainer}>
         <Text style={styles.emptyText}>No favorite recipes yet!</Text>
-        {/* add back button */}
+  
+        {/* Go back button */}
         <TouchableOpacity
           onPress={() => navigation.goBack()}
           style={{
@@ -38,7 +39,7 @@ export default function FavoriteScreen() {
             borderRadius: 5,
             marginTop: 10,
             width: 100,
-            alignItems: "center ",
+            alignItems: "center",
           }}
         >
           <Text style={{ color: "#fff" }}>Go back</Text>
@@ -46,19 +47,19 @@ export default function FavoriteScreen() {
       </View>
     );
   }
-
+  
   return (
     <>
       {/* Heading */}
-      <View testID="FavoriteRecipes">
+      <View testID="favoriteRecipes">
         <Text
           style={{ fontSize: hp(3.8), marginTop: hp(4), marginLeft: 20 }}
-          className="font-semibold text-neutral-600"
         >
           My Favorite Recipes
         </Text>
       </View>
-    
+  
+      {/* Go back button */}
       <TouchableOpacity
         onPress={() => navigation.goBack()}
         style={{
@@ -73,11 +74,35 @@ export default function FavoriteScreen() {
       >
         <Text style={{ color: "#fff" }}>Go back</Text>
       </TouchableOpacity>
-    
+  
+      {/* Favorite recipes list */}
+      <FlatList
+        data={favoriteRecipesList}
+        keyExtractor={(item) => item.idFood.toString()}
+        contentContainerStyle={styles.listContentContainer}
+        renderItem={({ item }) => (
+          <TouchableOpacity
+            style={styles.cardContainer}
+            onPress={() =>
+              navigation.navigate("RecipeDetail", { ...item })
+            }
+          >
+            <Image
+              source={{ uri: item.recipeImage }}
+              style={styles.recipeImage}
+            />
+  
+            <Text style={styles.recipeTitle}>
+              {item.recipeName.length > 20
+                ? item.recipeName.slice(0, 20) + "..."
+                : item.recipeName}
+            </Text>
+          </TouchableOpacity>
+        )}
+      />
     </>
   );
 }
-
 const styles = StyleSheet.create({
   emptyContainer: {
     flex: 1,
